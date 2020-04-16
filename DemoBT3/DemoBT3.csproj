@@ -91,5 +91,8 @@
   <ItemGroup>
     <None Include="Resources\marqueezoom_32x32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel_32x32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

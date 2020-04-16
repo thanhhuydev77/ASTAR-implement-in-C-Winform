@@ -18,7 +18,9 @@ namespace DemoBT3
         List<Place> OPEN;
         List<Place> CLOSE;
         int Length;
-
+        Pen pen = new Pen(Color.Red, 5);
+        Pen pen2 = new Pen(Color.Green, 5);
+        Graphics grphx;
 
         Place FindByName(string name)
         {
@@ -34,7 +36,7 @@ namespace DemoBT3
             InitializeComponent();
             InitPlace();
             InitRelation();
-            
+            grphx = pictureBox1.CreateGraphics();
         }
 
         private void InitRelation()
@@ -142,6 +144,7 @@ namespace DemoBT3
 
         private void simpleButton1_Click(object sender, EventArgs e)
         {
+            pictureBox1.Refresh();
             //search place
             Place startPlace = FindByName(start);
             Place EndPlace = FindByName(end);
@@ -151,7 +154,7 @@ namespace DemoBT3
                 return;
             }
             calculateH(startPlace);
-            startPlace.SetG(0);
+            
             //MessageBox.Show("start place " + startPlace.Name + " locate:X = " + startPlace.GetPoint().X + " ,Y = " + startPlace.GetPoint().Y + ",H =" + startPlace.GetH());
             //MessageBox.Show("end place " + EndPlace.Name + " locate:X = " + EndPlace.GetPoint().X + " ,Y = " + EndPlace.GetPoint().Y + ",H =" + EndPlace.GetH());
            for(int i = 0; i < AllPlace.Count();i++)
@@ -161,6 +164,7 @@ namespace DemoBT3
             bool issuccess = SearchRoute(startPlace, EndPlace);
             if(issuccess)
             {
+                pictureBox1.Refresh();
                 // print route
                 //pictureBox1.Invalidate();
                 printRoute();
@@ -171,15 +175,15 @@ namespace DemoBT3
 
         private void printRoute()
         {
-            pictureBox1.Refresh();
-            Graphics grphx = pictureBox1.CreateGraphics();
+            
+            
             Length = 0;
+            
 
-            Pen pen = new Pen(Color.Red, 5);
             Place curPlace = CLOSE[CLOSE.Count() - 1];
             while(curPlace.Parent!=null)
             {
-                grphx.DrawLine(pen, curPlace.GetX(), curPlace.GetY(), curPlace.Parent.GetX(), curPlace.Parent.GetY());
+                grphx.DrawLine(pen2, curPlace.GetX(), curPlace.GetY(), curPlace.Parent.GetX(), curPlace.Parent.GetY());
                 Length += curPlace.getW(curPlace.Parent);
                 curPlace = curPlace.Parent;
                
@@ -194,6 +198,7 @@ namespace DemoBT3
                 AllPlace[i].InitH(StartPlace);
             }
         }
+        
         Place getMinF(List<Place> list)
         {
             Place result = list[0];
@@ -207,79 +212,134 @@ namespace DemoBT3
 
         private bool SearchRoute(Place startPlace, Place endPlace)
         {
-
+                        //init 2 list OPEN and CLOSE empty
             OPEN = new List<Place>();
             OPEN.Clear();
             CLOSE = new List<Place>();
             CLOSE.Clear();
-
-
-            // set f(S) = h(S)
+            
             startPlace.SetG(0);
 
-            // step 1: push source node into OPEN
+                //push start place into OPEN
             OPEN.Add(startPlace);
-
-            // step 2: process until OPEN is empty
+            lbClose.Text = ListToString(CLOSE);
+            lbClose.Refresh();
+            lbOpen.Text = ListToString(OPEN);
+            lbOpen.Refresh();
+            //process until OPEN is empty
             // or until the route is found
             while (OPEN.Count() > 0)
             {
+                
 
-                //step 2.1: get the node with min f
+                //get the place with min f
                 var curIdx = this.getMinF(OPEN);
-
+                //remove it from OPEN
                 OPEN.Remove(curIdx);
-
-                // step 2.2: check if the route is found
+                
+                lbOpen.Text = ListToString(OPEN);
+                lbOpen.Refresh();
+                //Console.WriteLine("standing at : "+curIdx.Name);
+                lbStanding.Text = curIdx.Name;
+                lbStanding.Refresh();
+                //check if the route is found
                 if (curIdx == endPlace)
                 {
                     CLOSE.Add(curIdx);
+                    lbClose.Text = ListToString(CLOSE);
+                    lbClose.Refresh();
                     return true;
                 }
+                
                 List<NearPlace> listnearplaces = new List<NearPlace>(curIdx.GetRoundPlace());
-                // step 3: find 4 adjacent nodes Mi
+                //find all near places 
                 for (var i = 0; i < listnearplaces.Count(); i++)
                 {
-                    // step 3.1: check all valid Mi
-
+                    //Console.WriteLine("looking at : " + listnearplaces[i].place.Name);
+                    
+                    lbLooking.Text = listnearplaces[i].place.Name;
+                    lbLooking.Refresh();
+                    System.Threading.Thread.Sleep(int.Parse(nmTimewait.Value.ToString()));
+                    // calculate d(mi) = G(current place) + W(current place , near place[i])
                     int dmi = curIdx.GetG() + curIdx.getW(i);
+                    //it exsisted in OPEN
                     if (OPEN.Contains(listnearplaces[i].place))
                     {
-
-                        // if g(Mi) < d(Mi) => go to step 5
+                        // if g(current place) < d(Mi) => continue
                         if (listnearplaces[i].place.GetG() < dmi)
                         {
+
                             continue;
                         }
                     }
+                    //it exsisted in CLOSE
                     else if (CLOSE.Contains(listnearplaces[i].place))
                     {
-
-                        // if g(Mi) < d(Mi) => go to step 5
+                        // if g(Mi) < d(Mi) => continue
                         if (listnearplaces[i].place.GetG() < dmi)
                         {
+
                             continue;
                         }
+                        //move near place[i] to OPEN
                         OPEN.Add(listnearplaces[i].place);
                         CLOSE.Remove(listnearplaces[i].place);
+                        lbClose.Text = ListToString(CLOSE);
+                        lbClose.Refresh();
+                        lbOpen.Text = ListToString(OPEN);
+                        lbOpen.Refresh();
                     }
                     else
                     {
                         OPEN.Add(listnearplaces[i].place);
+                       
+                        lbOpen.Text = ListToString(OPEN);
+                        lbOpen.Refresh();
                     }
-                    //step 4: update g(Mi) = d(Mi)
+                    //update g(Mi) = d(Mi)
                     listnearplaces[i].place.SetG(dmi);
+                    lbOpen.Refresh();
+                    lbClose.Refresh();
                     listnearplaces[i].place.Parent = curIdx;
+                    if(listnearplaces[i].place.Parent != null)
+                    grphx.DrawLine(pen, listnearplaces[i].place.GetX(), listnearplaces[i].place.GetY(), listnearplaces[i].place.Parent.GetX(), listnearplaces[i].place.Parent.GetY());
+                    
+                    System.Threading.Thread.Sleep(int.Parse(nmTimewait.Value.ToString()));
+
 
                 }
 
-                //step 5: move curNode to CLOSE
+                //move curNode to CLOSE
                 CLOSE.Add(curIdx);
-
+                lbClose.Text = ListToString(CLOSE);
+                lbClose.Refresh();
+                
             }
             return false;
         }
+        string ListToString(List<Place> list)
+        {
+            StringBuilder result = new StringBuilder();
+            if (list.Count == 0)
+                return "EMPTY";
+            result.Append(list[0].Name +"("+list[0].GetF()+")");
+            for(int i = 1; i < list.Count();i++)
+            {
+                result.Append("," + list[i].Name + "(" + list[i].GetF() + ")");
+            }
+            return result.ToString();
+        }
 
+        private void lbClose_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void lbOpen_Click(object sender, EventArgs e)
+        {
+
+        }
+
+       
     }
 }
