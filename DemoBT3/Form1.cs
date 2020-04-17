@@ -248,6 +248,8 @@ namespace DemoBT3
                     CLOSE.Add(curIdx);
                     lbClose.Text = ListToString(CLOSE);
                     lbClose.Refresh();
+                    lbStatus.Text = "Đã tìm thấy đích";
+                    lbStatus.Refresh();
                     return true;
                 }
                 
@@ -268,7 +270,9 @@ namespace DemoBT3
                         // if g(current place) < d(Mi) => continue
                         if (listnearplaces[i].place.GetG() < dmi)
                         {
-
+                            lbStatus.Text = "Nằm trong OPEN ,có g bé hơn dmi nên bỏ qua";
+                            lbStatus.Refresh();
+                            System.Threading.Thread.Sleep(int.Parse(nmTimewait.Value.ToString()));
                             continue;
                         }
                     }
@@ -278,7 +282,9 @@ namespace DemoBT3
                         // if g(Mi) < d(Mi) => continue
                         if (listnearplaces[i].place.GetG() < dmi)
                         {
-
+                            lbStatus.Text = "Nằm trong CLOSE ,có g bé hơn dmi nên bỏ qua";
+                            lbStatus.Refresh();
+                            System.Threading.Thread.Sleep(int.Parse(nmTimewait.Value.ToString()));
                             continue;
                         }
                         //move near place[i] to OPEN
@@ -288,11 +294,14 @@ namespace DemoBT3
                         lbClose.Refresh();
                         lbOpen.Text = ListToString(OPEN);
                         lbOpen.Refresh();
+                        lbStatus.Text = "Nằm trong CLOSE ,có g lớn hơn dmi nên chuyển vào OPEN";
+                        lbStatus.Refresh();
                     }
                     else
                     {
                         OPEN.Add(listnearplaces[i].place);
-                       
+                        lbStatus.Text = "Không nằm trong CLOSE và OPEN nên thêm vào OPEN";
+                        lbStatus.Refresh();
                         lbOpen.Text = ListToString(OPEN);
                         lbOpen.Refresh();
                     }
@@ -339,7 +348,5 @@ namespace DemoBT3
         {
 
         }
-
-       
     }
 }

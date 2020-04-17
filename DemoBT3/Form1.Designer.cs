@@ -68,6 +68,8 @@
             this.lbOpen = new System.Windows.Forms.Label();
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lbStatus = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmTimewait)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -348,6 +350,8 @@
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.panel1.Controls.Add(this.nmTimewait);
             this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.lbStatus);
+            this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.lbLooking);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.lbStanding);
@@ -369,7 +373,7 @@
             0,
             0,
             0});
-            this.nmTimewait.Location = new System.Drawing.Point(139, 471);
+            this.nmTimewait.Location = new System.Drawing.Point(139, 493);
             this.nmTimewait.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -389,7 +393,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(11, 468);
+            this.label4.Location = new System.Drawing.Point(11, 494);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(122, 18);
             this.label4.TabIndex = 1;
@@ -503,6 +507,27 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Modern No. 20", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label5.Location = new System.Drawing.Point(10, 435);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(64, 18);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "Status :";
+            // 
+            // lbStatus
+            // 
+            this.lbStatus.BackColor = System.Drawing.Color.White;
+            this.lbStatus.Font = new System.Drawing.Font("Modern No. 20", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbStatus.ForeColor = System.Drawing.Color.Black;
+            this.lbStatus.Location = new System.Drawing.Point(121, 438);
+            this.lbStatus.Name = "lbStatus";
+            this.lbStatus.Size = new System.Drawing.Size(247, 52);
+            this.lbStatus.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AcceptButton = this.simpleButton1;
@@ -591,6 +616,8 @@
         private System.Windows.Forms.Label lbOpen;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown nmTimewait;
+        private System.Windows.Forms.Label lbStatus;
+        private System.Windows.Forms.Label label5;
     }
 }
 
