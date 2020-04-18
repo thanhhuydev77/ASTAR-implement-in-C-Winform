@@ -234,6 +234,10 @@ namespace DemoBT3
 
                 //get the place with min f
                 var curIdx = this.getMinF(OPEN);
+                lbStatus.Text = "chọn "+curIdx.Name +" với F nhỏ nhất trong OPEN";
+                lbStatus.Refresh();
+                System.Threading.Thread.Sleep(int.Parse(nmTimewait.Value.ToString()));
+                
                 //remove it from OPEN
                 OPEN.Remove(curIdx);
                 
@@ -261,7 +265,7 @@ namespace DemoBT3
                     
                     lbLooking.Text = listnearplaces[i].place.Name;
                     lbLooking.Refresh();
-                    System.Threading.Thread.Sleep(int.Parse(nmTimewait.Value.ToString()));
+                    
                     // calculate d(mi) = G(current place) + W(current place , near place[i])
                     int dmi = curIdx.GetG() + curIdx.getW(i);
                     //it exsisted in OPEN
@@ -296,6 +300,7 @@ namespace DemoBT3
                         lbOpen.Refresh();
                         lbStatus.Text = "Nằm trong CLOSE ,có g lớn hơn dmi nên chuyển vào OPEN";
                         lbStatus.Refresh();
+                        System.Threading.Thread.Sleep(int.Parse(nmTimewait.Value.ToString()));
                     }
                     else
                     {
@@ -304,9 +309,12 @@ namespace DemoBT3
                         lbStatus.Refresh();
                         lbOpen.Text = ListToString(OPEN);
                         lbOpen.Refresh();
+                        System.Threading.Thread.Sleep(int.Parse(nmTimewait.Value.ToString()));
                     }
                     //update g(Mi) = d(Mi)
                     listnearplaces[i].place.SetG(dmi);
+                    lbStatus.Text = "Cập nhật G cho "+ listnearplaces[i].place.Name;
+                    lbStatus.Refresh();
                     lbOpen.Refresh();
                     lbClose.Refresh();
                     listnearplaces[i].place.Parent = curIdx;
